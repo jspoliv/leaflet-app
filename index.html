@@ -7,7 +7,9 @@
 	<style>
         #map {
             width: 100%;
+			min-width: 250px;
             height: 500px;
+			min-height: 250px;
         }
 		
 		#text {
@@ -15,33 +17,26 @@
 		}
     </style>
 	
-	<link rel="stylesheet" href="leaflet.css" />
-	<script src="leaflet.js"></script>
-	<!--
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 		integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
 		crossorigin=""/>
 	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
 		integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-		crossorigin=""></script>
-	-->	
+		crossorigin=""></script>	
 </head>
 <body>
 	<div id="text">
 		<h1>Localização atual</h1>
 		<div id="button_id"><button onclick="getLocation()">Localizar</button></div>
 		<div id="map"></div>
-	</div>
-	<div id="ctrl_btn"></div>
-	
+	</div>	
 	<script>
 		const x = document.getElementById("button_id");
 		var map;
-		const y = document.getElementById("ctrl_btn");
-		
+		getLocation();
 		
 		function initMap(position) {
-			map = L.map('map', {/*minZoom: 15, maxZoom: 19,*/zoomControl: false}).setView(
+			map = L.map('map', {minZoom: 15, maxZoom: 19}).setView(
 				[position.coords.latitude, position.coords.longitude], 17);
 			
 			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -50,10 +45,7 @@
 			}).addTo(map);
 			L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
 			//.bindPopup("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude).openPopup();
-			
-			// Desabilita interação
-			mapDisable();
-			
+
 		}
 		
 		function getLocation() {
@@ -84,30 +76,6 @@
 					x.innerHTML = "An unknown error occurred."
 					break;
 			}
-		}
-		
-		function mapEnable() {
-			map.dragging.enable();
-			map.touchZoom.enable();
-			map.doubleClickZoom.enable();
-			map.scrollWheelZoom.enable();
-			map.boxZoom.enable();
-			map.keyboard.enable();
-			if (map.tap) map.tap.disable();
-			document.getElementById('map').style.cursor='dragging';
-			y.innerHTML = '<button onclick="mapDisable()">Travar</button>';
-		}
-		
-		function mapDisable() {
-			map.dragging.disable();
-			map.touchZoom.disable();
-			map.doubleClickZoom.disable();
-			map.scrollWheelZoom.disable();
-			map.boxZoom.disable();
-			map.keyboard.disable();
-			if (map.tap) map.tap.disable();
-			document.getElementById('map').style.cursor='default';
-			y.innerHTML = '<button onclick="mapEnable()">Destravar</button>';
 		}
     </script>
 	
